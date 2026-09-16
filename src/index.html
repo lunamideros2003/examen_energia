@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Auditoria de perdidas de energia</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <app-root></app-root>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').then(function () {
+          console.log('Service worker registrado, la app puede abrir sin internet');
+        }).catch(function () {
+          console.log('No se pudo registrar el service worker');
+        });
+      });
+    }
+  </script>
+</body>
+</html>

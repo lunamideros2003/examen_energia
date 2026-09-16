@@ -1,0 +1,96 @@
+<div class="page">
+
+  <h1>Auditoria de perdidas de energia</h1>
+
+  <div class="card">
+    <h2>1. Cargar archivos</h2>
+    <div class="row">
+      <div>
+        <p>Archivo de topologia (topologia.csv)</p>
+        <input type="file" accept=".csv" (change)="onTopologyFileSelected($event)">
+        <p class="small">Filas cargadas: {{ topologyRows.length }}</p>
+      </div>
+      <div>
+        <p>Archivo de lecturas (lecturas_mes.csv)</p>
+        <input type="file" accept=".csv" (change)="onReadingsFileSelected($event)" [disabled]="isProcessing">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2. Progreso del procesamiento</h2>
+    <p>Estado: {{ statusMessage }}</p>
+    <p>Workers usados (navigator.hardwareConcurrency): {{ workerCount }}</p>
+    <div class="progress-bar-fondo" *ngIf="totalBlocks > 0">
+      <div class="progress-bar-relleno" [style.width.%]="(progressBlocks / totalBlocks) * 100"></div>
+    </div>
+    <p class="small" *ngIf="totalBlocks > 0">Bloques procesados: {{ progressBlocks }} / {{ totalBlocks }}</p>
+    <p class="small">Filas totales leidas: {{ meterIdColumn.length }}</p>
+    <p class="small">Huecos detectados en la carga: {{ totalGaps }}</p>
+    <p class="small" *ngIf="imputedPercentage > 0">Porcentaje imputado: {{ imputedPercentage.toFixed(2) }}%</p>
+  </div>
+
+  <div class="card">
+    <h2>3. Salud del navegador</h2>
+    <p>crossOriginIsolated: <span [class.ok]="crossOriginIsolatedValue" [class.malo]="!crossOriginIsolatedValue">{{ crossOriginIsolatedValue }}</span></p>
+    <p>INP mas alto detectado: {{ inpValue.toFixed(1) }} ms</p>
+    <p>Cantidad de long tasks detectadas: {{ longTaskCount }}</p>
+  </div>
+
+  <div class="card" *ngIf="rankingList.length > 0">
+    <h2>4. Ranking de transformadores sospechosos</h2>
+    <table class="tabla-simple">
+      <thead>
+        <tr><th>Puesto</th><th>Transformador</th><th>Perdida acumulada (kwh)</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of rankingList; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ item.transformerId }}</td>
+          <td>{{ item.totalLoss.toFixed(2) }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>5. Consulta de subarbol jerarquico</h2>
+    <div class="row">
+      <input type="text" placeholder="Id del nodo, ej: CIR-07" [(ngModel)]="selectedSubtreeNode">
+      <input type="number" placeholder="Hora desde" [(ngModel)]="subtreeHourFrom">
+      <input type="number" placeholder="Hora hasta" [(ngModel)]="subtreeHourTo">
+      <button (click)="querySubtree()">Consultar</button>
+    </div>
+    <p>Energia total del subarbol: {{ subtreeResult.toFixed(2) }} kwh</p>
+  </div>
+
+  <div class="card">
+    <h2>6. Tabla de medidores (virtualizada)</h2>
+    <input type="text" placeholder="Filtrar por medidor o transformador" [(ngModel)]="filterText" (ngModelChange)="onFilterChange()">
+    <p class="small">Filas mostradas: {{ filteredRows.length }}</p>
+    <cdk-virtual-scroll-viewport itemSize="28" class="viewport-tabla">
+      <div class="fila-tabla" *cdkVirtualFor="let row of filteredRows">
+        <span class="celda">{{ row.meterId }}</span>
+        <span class="celda">{{ row.transformerId }}</span>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </div>
+
+  <div class="card">
+    <h2>7. Medicion de transferencia vs copia (RT-3)</h2>
+    <button (click)="runTransferBenchmark()" [disabled]="benchmarkRunning">Correr medicion</button>
+    <table class="tabla-simple" *ngIf="transferBenchmarkResults.length > 0">
+      <thead>
+        <tr><th>Tamaño</th><th>Copia (ms)</th><th>Transferencia (ms)</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of transferBenchmarkResults">
+          <td>{{ item.size }}</td>
+          <td>{{ item.copyTime.toFixed(2) }}</td>
+          <td>{{ item.transferTime.toFixed(2) }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

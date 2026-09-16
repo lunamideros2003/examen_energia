@@ -1,0 +1,42 @@
+:root {
+  --color-fondo: #FAFAFF;
+  --color-tarjeta: #FFFFFF;
+  --color-primario: #A7C7E7;
+  --color-secundario: #C9E4CA;
+  --color-acento: #FFD6A5;
+  --color-peligro: #FFADAD;
+  --color-texto: #3A3A3A;
+  --color-borde: #E3E3F0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+}
+
+button {
+  background-color: var(--color-primario);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  color: var(--color-texto);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background-color: var(--color-secundario);
+}
+
+input {
+  border: 1px solid var(--color-borde);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 14px;
+}
