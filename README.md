@@ -1,13 +1,13 @@
 # Caso de estudio 2 - Auditoria de perdidas de energia
 
-Aplicacion en Angular que procesa el archivo de lecturas de medidores directamente en el navegador, usando Web Workers, SharedWorker y Service Worker, sin subir el archivo a ningun servidor.
+Aplicacion en Angular que procesa el archivo de lecturas de medidores directamente en el navegador, usando Web Workers, SharedWorker y Service Worker
 
-## Como correr el proyecto (con Sublime Text solo se edita el codigo, para ejecutarlo se necesita Node.js instalado)
+## Como correr el proyecto se necesita Node.js instalado
 
 1. Instalar dependencias:
    npm install
 
-2. Generar datos de prueba (opcional, crea lecturas_mes.csv y topologia.csv en la raiz):
+2. Generar datos de prueba 
    npm run generar-datos
 
 3. Modo desarrollo:
